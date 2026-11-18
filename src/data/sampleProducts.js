@@ -24,7 +24,7 @@ export const testProducts = [
     name: 'Toshiba Keyboard',
     price: 39,
     category: 'Accessories',
-    quantity: 12,
+    quantity: 8,
     inStock: true,
     onSale: false,
     discount: 0
@@ -44,7 +44,7 @@ export const testProducts = [
     name: 'Apple iPhone 18 Pro',
     price: 1199,
     category: 'Smartphones',
-    quantity: 25,
+    quantity: 6,
     inStock: true,
     onSale: false,
     discount: 0
@@ -54,7 +54,7 @@ export const testProducts = [
     name: 'Dell Pro 16 Plus Laptop',
     price: 1975.2,
     category: 'Laptops',
-    quantity: 15,
+    quantity: 4,
     inStock: true,
     onSale: false,
     discount: 0
@@ -64,7 +64,7 @@ export const testProducts = [
     name: 'Samsung Galaxy S26 Ultra',
     price: 1529,
     category: 'Smartphones',
-    quantity: 15,
+    quantity: 5,
     inStock: true,
     onSale: true,
     discount: 10
@@ -74,7 +74,7 @@ export const testProducts = [
     name: 'Apple iPad Air',
     price: 1199,
     category: 'Tablets',
-    quantity: 15,
+    quantity: 5,
     inStock: true,
     onSale: false,
     discount: 0
@@ -84,7 +84,7 @@ export const testProducts = [
     name: 'Acer Aspire 14 AI Laptop',
     price: 749.99,
     category: 'Laptops',
-    quantity: 12,
+    quantity: 7,
     inStock: true,
     onSale: false,
     discount: 0
@@ -104,7 +104,7 @@ export const testProducts = [
     name: 'Google Pixel Tablet',
     price: 599,
     category: 'Tablets',
-    quantity: 15,
+    quantity: 6,
     inStock: true,
     onSale: true,
     discount: 5
