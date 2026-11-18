@@ -1,13 +1,15 @@
 const ProductFilters = ({
   category,
-  inStock,
-  onSale,
+  inStockOnly,
+  onSaleOnly,
   sortOrder,
   onCategoryChange,
   onStockChange,
   onSaleChange,
   onSortChange,
-  onClearFilters
+  onClearFilters,
+  visibleProducts,
+  allProducts
 }) => {
   return (
     <div className='product-filters'>
@@ -28,7 +30,7 @@ const ProductFilters = ({
       <label>
         <input
           type='checkbox'
-          checked={inStock}
+          checked={inStockOnly}
           onChange={event => onStockChange(event.target.checked)}
         />
         In Stock Only
@@ -37,7 +39,7 @@ const ProductFilters = ({
       <label>
         <input
           type='checkbox'
-          checked={onSale}
+          checked={onSaleOnly}
           onChange={event => onSaleChange(event.target.checked)}
         />
         On Sale Only
@@ -59,6 +61,9 @@ const ProductFilters = ({
       <button type='button' onClick={onClearFilters}>
         Clear Filters
       </button>
+      <p className='results-message'>
+        Showing {visibleProducts.length} of {allProducts.length} products
+      </p>
     </div>
   );
 };

@@ -10,8 +10,8 @@ function App() {
   const [cartCount, setCartCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
-  const [inStock, setInStockOnly] = useState(false);
-  const [onSale, setOnSaleOnly] = useState(false);
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [onSaleOnly, setOnSaleOnly] = useState(false);
   const [sortOrder, setSortOrder] = useState('default');
 
   function handleAddToCart(productId) {
@@ -39,8 +39,8 @@ function App() {
   const filters = {
     searchTerm,
     category,
-    inStock,
-    onSale,
+    inStockOnly,
+    onSaleOnly,
     sortOrder
   };
 
@@ -53,14 +53,16 @@ function App() {
         <SearchBar searchTerm={searchTerm} onSearchTerm={setSearchTerm} />
         <ProductFilters
           category={category}
-          inStock={inStock}
-          onSale={onSale}
+          inStockOnly={inStockOnly}
+          onSaleOnly={onSaleOnly}
           sortOrder={sortOrder}
           onCategoryChange={setCategory}
           onStockChange={setInStockOnly}
           onSaleChange={setOnSaleOnly}
           onSortChange={setSortOrder}
           onClearFilters={handleClearFilters}
+          visibleProducts={visibleProducts}
+          allProducts={testProducts}
         />
         <ProductCatalogue
           visibleProducts={visibleProducts}

@@ -2,8 +2,8 @@ export default function selectProducts(products, filters) {
   const {
     searchTerm = '',
     category = 'all',
-    inStock = false,
-    onSale = false,
+    inStockOnly = false,
+    onSaleOnly = false,
     sortOrder = 'default'
   } = filters;
 
@@ -16,9 +16,9 @@ export default function selectProducts(products, filters) {
 
     const matchesCategory = category === 'all' || product.category === category;
 
-    const matchesStock = !inStock || product.inStock;
+    const matchesStock = !inStockOnly || product.inStock;
 
-    const matchesSale = !onSale || product.onSale;
+    const matchesSale = !onSaleOnly || product.onSale;
 
     return matchesSearch && matchesCategory && matchesStock && matchesSale;
   });
