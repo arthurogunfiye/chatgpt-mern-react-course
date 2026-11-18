@@ -134,7 +134,7 @@ describe('FILTER-004: Combined filters', () => {
 
     expect(cardTitles()).toEqual(['Samsung Galaxy S26 Ultra']);
     const card = cards()[0];
-    expect(within(card).getByText('Price: £1529.00')).toBeInTheDocument();
+    expect(within(card).getByText('Price: £1,529.00')).toBeInTheDocument();
     expect(within(card).getByText('SALE')).toBeInTheDocument();
     expect(within(card).getByText('In Stock')).toBeInTheDocument();
     expect(within(card).getByRole('button')).toBeEnabled();

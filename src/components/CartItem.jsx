@@ -12,9 +12,11 @@ const CartItem = ({
     <div className='cart-item'>
       <span className='cart-item-name'>{name}</span>
       <p className='cart-item-subtotal'>
-        <span>{quantity} * </span>
-        <span>{formatPrice(price)}</span>
-        <span> = {formatPrice(quantity * price)}</span>
+        <span className='item-quantity'>{quantity}</span>
+        <span> * </span>
+        <span className='item-price'>{formatPrice(price)}</span>
+        <span> = </span>
+        <span className='item-subtotal'>{formatPrice(quantity * price)}</span>
       </p>
       <button
         type='button'

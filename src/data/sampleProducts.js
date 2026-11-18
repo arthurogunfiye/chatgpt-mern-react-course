@@ -34,7 +34,7 @@ export const testProducts = [
     name: 'Samsung Monitor',
     price: 129,
     category: 'Accessories',
-    quantity: 5,
+    quantity: 7,
     inStock: true,
     onSale: true,
     discount: 10

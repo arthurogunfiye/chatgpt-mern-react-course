@@ -7,8 +7,7 @@ const CartSummary = ({
   onResetCart,
   onIncreaseQty,
   onDecreaseQty,
-  removeFromCart,
-  saveForLater
+  removeFromCart
 }) => {
   if (cartItems.length === 0) {
     return (

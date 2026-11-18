@@ -1,7 +1,7 @@
 import formatPrice from '../utils/formatPrice';
 
 const ProductCard = ({ product, onAddToCart }) => {
-  const { id, name, price, inStock, category, onSale } = product;
+  const { id, name, price, inStock, category, onSale, quantity } = product;
 
   return (
     <article id={`product-${id}`} className='product-card'>
@@ -10,6 +10,7 @@ const ProductCard = ({ product, onAddToCart }) => {
       <p className='product-category'>Category: {category}</p>
       <p className='product-price'>Price: {formatPrice(price)}</p>
       <p>{inStock ? 'In Stock' : 'Out of Stock'}</p>
+      {inStock && <p>Available: {quantity}</p>}
       <button
         type='button'
         className='add-to-cart'

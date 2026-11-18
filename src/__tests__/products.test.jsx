@@ -26,11 +26,11 @@ const onSale = testProducts.filter(p => p.onSale);
 
 describe('PROP-001: ProductCard displays correct name, category and price', () => {
   test.each([
-    ['HP EliteBook 8 G1i Laptop', 'Laptops', '£1713.59'],
+    ['HP EliteBook 8 G1i Laptop', 'Laptops', '£1,713.59'],
     ['Samsung Monitor', 'Accessories', '£129.00'],
     ['HDMI Cable', 'Accessories', '£3.99'],
     ['Google Pixel Tablet', 'Tablets', '£599.00'],
-    ['Dell Pro 16 Plus Laptop', 'Laptops', '£1975.20']
+    ['Dell Pro 16 Plus Laptop', 'Laptops', '£1,975.20']
   ])('%s', (name, category, price) => {
     const card = cardFor(byName(name));
     const q = within(card);

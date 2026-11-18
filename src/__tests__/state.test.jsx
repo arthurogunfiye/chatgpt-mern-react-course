@@ -106,7 +106,7 @@ describe('STATE-006: Reset Cart regression', () => {
     fireEvent.click(addButtonFor('Samsung Monitor'));
     expectCart(3);
 
-    const resetButtons = screen.getAllByRole('button', { name: 'Reset Cart' });
+    const resetButtons = within(screen.getByRole('banner')).getAllByRole('button', { name: 'Reset Cart' });
     expect(resetButtons).toHaveLength(2);
     fireEvent.click(resetButtons[idx]);
     expectCart(0);
@@ -125,7 +125,7 @@ describe('STATE-006: Reset Cart regression', () => {
     search('samsung');
     fireEvent.click(addButtonFor('Samsung Monitor'));
     expectCart(1);
-    fireEvent.click(screen.getAllByRole('button', { name: 'Reset Cart' })[0]);
+    fireEvent.click(within(screen.getByRole('banner')).getAllByRole('button', { name: 'Reset Cart' })[0]);
     expectCart(0);
     expect(searchBox()).toHaveValue('samsung');
     expect(cards()).toHaveLength(3);
