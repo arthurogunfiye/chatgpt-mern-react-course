@@ -171,12 +171,12 @@ describe('FILTER-005: Sorting and reset regression', () => {
     'Samsung Monitor',
     'Bose QuietComfort Ultra Headphones',
     'Google Pixel Tablet',
-    'Acer Aspire 14 AI Laptop',
     'Google Pixel 11 Pro',
+    'Acer Aspire 14 AI Laptop',
+    'Samsung Galaxy Tab S12 Ultra',
     'Huawei Mate XT Phone',
     'Apple iPhone 18 Pro',
     'Apple iPad Air',
-    'Samsung Galaxy Tab S12 Ultra',
     'Samsung Galaxy S26 Ultra',
     'HP EliteBook 8 G1i Laptop',
     'Dell Pro 16 Plus Laptop'
@@ -186,13 +186,13 @@ describe('FILTER-005: Sorting and reset regression', () => {
     'Dell Pro 16 Plus Laptop',
     'HP EliteBook 8 G1i Laptop',
     'Samsung Galaxy S26 Ultra',
-    // £1199 ties keep source order
     'Apple iPhone 18 Pro',
     'Apple iPad Air',
-    'Samsung Galaxy Tab S12 Ultra',
     'Huawei Mate XT Phone',
-    'Google Pixel 11 Pro',
+    'Samsung Galaxy Tab S12 Ultra',
+    // £1199 ties keep source order
     'Acer Aspire 14 AI Laptop',
+    'Google Pixel 11 Pro',
     'Google Pixel Tablet',
     'Bose QuietComfort Ultra Headphones',
     'Samsung Monitor',
@@ -201,11 +201,11 @@ describe('FILTER-005: Sorting and reset regression', () => {
   ];
 
   const prices = () =>
-    [...cards()].map(c =>
-      Number(
-        c.querySelector('.product-price').textContent.replace(/[^\d.]/g, '')
-      )
-    );
+    [...cards()].map(c => {
+      const shown =
+        c.querySelector('.discount-price') ?? c.querySelector('.product-price');
+      return Number(shown.textContent.replace(/[^\d.]/g, ''));
+    });
 
   test('ascending, descending and default orders are correct', () => {
     render(<App />);
