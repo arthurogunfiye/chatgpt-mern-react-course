@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ProductCard from './ProductCard';
+import ProductCard from '../components/ProductCard';
 
 describe('ProductCard', () => {
   it('disables Add to Cart for out-of-stock products', () => {
@@ -12,7 +12,8 @@ describe('ProductCard', () => {
       price: 3.99,
       quantity: 0,
       inStock: false,
-      onSale: true
+      onSale: true,
+      discount: 7
     };
 
     render(<ProductCard product={product} onAddToCart={vi.fn()} />);
@@ -35,7 +36,8 @@ describe('ProductCard', () => {
       price: 129,
       quantity: 7,
       inStock: true,
-      onSale: true
+      onSale: true,
+      discount: 10
     };
 
     render(<ProductCard product={product} onAddToCart={onAddToCart} />);
@@ -44,5 +46,22 @@ describe('ProductCard', () => {
 
     expect(onAddToCart).toHaveBeenCalledWith(104);
     expect(onAddToCart).toHaveBeenCalledTimes(1);
+  });
+
+  it('displays the correct discounted price', () => {
+    const product = {
+      id: 104,
+      name: 'Samsung Monitor',
+      category: 'Accessories',
+      price: 129,
+      quantity: 7,
+      inStock: true,
+      onSale: true,
+      discount: 10
+    };
+
+    render(<ProductCard product={product} onAddToCart={vi.fn()} />);
+
+    expect(screen.getByText('Sale Price: £116.10')).toBeInTheDocument();
   });
 });

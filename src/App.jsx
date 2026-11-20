@@ -32,18 +32,20 @@ function App() {
       return;
     }
 
-    setCartItems(previousItems => {
-      const existingItem = previousItems.find(item => item.id === productId);
+    setCartItems(previousCartItems => {
+      const existingCartItem = previousCartItems.find(
+        item => item.id === productId
+      );
 
-      if (existingItem) {
-        if (existingItem.quantity >= selectedProduct.quantity) {
+      if (existingCartItem) {
+        if (existingCartItem.quantity >= selectedProduct.quantity) {
           console.warn(
             `You have reached the maximum quantity of ${selectedProduct.name} in stock`
           );
-          return previousItems;
+          return previousCartItems;
         }
 
-        return previousItems.map(item =>
+        return previousCartItems.map(item =>
           item.id === productId
             ? { ...item, quantity: item.quantity + 1 }
             : item
@@ -51,7 +53,7 @@ function App() {
       }
 
       return [
-        ...previousItems,
+        ...previousCartItems,
         {
           id: selectedProduct.id,
           name: selectedProduct.name,

@@ -12,12 +12,15 @@ const expectCart = n => {
 
 const cards = () => document.querySelectorAll('article.product-card');
 const cardTitles = () =>
-  [...cards()].map(c => within(c).getByRole('heading', { level: 3 }).textContent);
+  [...cards()].map(
+    c => within(c).getByRole('heading', { level: 3 }).textContent
+  );
 const cardFor = name =>
   screen.getByRole('heading', { level: 3, name }).closest('article');
 const addButtonFor = name => within(cardFor(name)).getByRole('button');
 const searchBox = () => screen.getByLabelText('Search Products');
-const search = term => fireEvent.change(searchBox(), { target: { value: term } });
+const search = term =>
+  fireEvent.change(searchBox(), { target: { value: term } });
 
 describe('STATE-001: Initial render', () => {
   test('cart is 0 and all 14 products are visible', () => {
@@ -26,7 +29,9 @@ describe('STATE-001: Initial render', () => {
     expect(cards()).toHaveLength(14);
     expect(cardTitles()).toEqual(testProducts.map(p => p.name));
     expect(searchBox()).toHaveValue('');
-    expect(screen.queryByText('No products match your search or filters.')).toBeNull();
+    expect(
+      screen.queryByText('No products match your search or filters.')
+    ).toBeNull();
   });
 });
 
@@ -55,7 +60,9 @@ describe('STATE-003: Out-of-stock protection', () => {
       expectCart(1);
 
       const btn = addButtonFor(name);
-      expect(within(cardFor(name)).getByText('Out of Stock')).toBeInTheDocument();
+      expect(
+        within(cardFor(name)).getByText('Out of Stock')
+      ).toBeInTheDocument();
       expect(btn).toBeDisabled();
       expect(btn).toHaveTextContent('Unavailable');
 
@@ -76,7 +83,9 @@ describe('STATE-004: Mixed-case search with spaces', () => {
       'Samsung Galaxy S26 Ultra',
       'Samsung Galaxy Tab S12 Ultra'
     ]);
-    expect(screen.queryByText('No products match your search or filters.')).toBeNull();
+    expect(
+      screen.queryByText('No products match your search or filters.')
+    ).toBeNull();
   });
 });
 
@@ -85,13 +94,17 @@ describe('STATE-005: No matches and search recovery', () => {
     render(<App />);
     search('xyz-no-such-product');
     expect(cards()).toHaveLength(0);
-    expect(screen.getByText('No products match your search or filters.')).toBeInTheDocument();
+    expect(
+      screen.getByText('No products match your search or filters.')
+    ).toBeInTheDocument();
     // The "no products at all" message must NOT be shown — data still exists
     expect(screen.queryByText('There are no products available.')).toBeNull();
 
     search('');
     expect(cards()).toHaveLength(14);
-    expect(screen.queryByText('No products match your search or filters.')).toBeNull();
+    expect(
+      screen.queryByText('No products match your search or filters.')
+    ).toBeNull();
   });
 });
 
@@ -99,33 +112,43 @@ describe('STATE-006: Reset Cart regression', () => {
   test.each([
     ['desktop', 1],
     ['mobile', 0]
-  ])('%s Reset Cart returns cart to 0 and cart keeps working', (_label, idx) => {
-    render(<App />);
-    fireEvent.click(addButtonFor('Samsung Monitor'));
-    fireEvent.click(addButtonFor('Apple iPad Air'));
-    fireEvent.click(addButtonFor('Samsung Monitor'));
-    expectCart(3);
+  ])(
+    '%s Reset Cart returns cart to 0 and cart keeps working',
+    (_label, idx) => {
+      render(<App />);
+      fireEvent.click(addButtonFor('Samsung Monitor'));
+      fireEvent.click(addButtonFor('Apple iPad Air'));
+      fireEvent.click(addButtonFor('Samsung Monitor'));
+      expectCart(3);
 
-    const resetButtons = within(screen.getByRole('banner')).getAllByRole('button', { name: 'Reset Cart' });
-    expect(resetButtons).toHaveLength(2);
-    fireEvent.click(resetButtons[idx]);
-    expectCart(0);
+      const resetButtons = within(screen.getByRole('banner')).getAllByRole(
+        'button',
+        { name: 'Reset Cart' }
+      );
+      expect(resetButtons).toHaveLength(2);
+      fireEvent.click(resetButtons[idx]);
+      expectCart(0);
 
-    // Reset on an empty cart stays at 0 (no negatives)
-    fireEvent.click(resetButtons[idx]);
-    expectCart(0);
+      // Reset on an empty cart stays at 0 (no negatives)
+      expect(resetButtons[idx]).toBeDisabled();
+      expectCart(0);
 
-    // Cart still increments correctly after reset
-    fireEvent.click(addButtonFor('Samsung Monitor'));
-    expectCart(1);
-  });
+      // Cart still increments correctly after reset
+      fireEvent.click(addButtonFor('Samsung Monitor'));
+      expectCart(1);
+    }
+  );
 
   test('reset does not clear the search term or filtered results', () => {
     render(<App />);
     search('samsung');
     fireEvent.click(addButtonFor('Samsung Monitor'));
     expectCart(1);
-    fireEvent.click(within(screen.getByRole('banner')).getAllByRole('button', { name: 'Reset Cart' })[0]);
+    fireEvent.click(
+      within(screen.getByRole('banner')).getAllByRole('button', {
+        name: 'Reset Cart'
+      })[0]
+    );
     expectCart(0);
     expect(searchBox()).toHaveValue('samsung');
     expect(cards()).toHaveLength(3);

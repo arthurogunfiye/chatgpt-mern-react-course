@@ -16,18 +16,20 @@ const CartSummary = ({
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
-        cartItems.map(cartItem => {
-          return (
-            <CartItem
-              key={cartItem.id}
-              cartItem={cartItem}
-              onIncreaseQty={onIncreaseQty}
-              onDecreaseQty={onDecreaseQty}
-              removeFromCart={removeFromCart}
-              canIncrease={getAvailableQuantity(cartItem.id) > 0}
-            />
-          );
-        })
+        <ul className='cart-items-list'>
+          {cartItems.map(cartItem => {
+            return (
+              <CartItem
+                key={cartItem.id}
+                cartItem={cartItem}
+                onIncreaseQty={onIncreaseQty}
+                onDecreaseQty={onDecreaseQty}
+                removeFromCart={removeFromCart}
+                canIncrease={getAvailableQuantity(cartItem.id) > 0}
+              />
+            );
+          })}
+        </ul>
       )}
 
       <p>

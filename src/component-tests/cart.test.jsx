@@ -22,8 +22,10 @@ describe('CART: quantity controls', () => {
     render(<App />);
     addToCart(LAPTOP);
     for (let i = 0; i < 4; i++) click(`Increase quantity of ${LAPTOP}`);
-    expectCart(5);
-    click(`Increase quantity of ${LAPTOP}`);
+    const increaseButton = screen.getByRole('button', {
+      name: `Increase quantity of ${LAPTOP}`
+    });
+    expect(increaseButton).toBeDisabled();
     expectCart(5); // capped
   });
 

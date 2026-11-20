@@ -190,7 +190,6 @@ describe('FILTER-005: Sorting and reset regression', () => {
     'Apple iPad Air',
     'Huawei Mate XT Phone',
     'Samsung Galaxy Tab S12 Ultra',
-    // £1199 ties keep source order
     'Acer Aspire 14 AI Laptop',
     'Google Pixel 11 Pro',
     'Google Pixel Tablet',
