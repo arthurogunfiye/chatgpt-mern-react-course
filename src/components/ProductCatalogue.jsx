@@ -1,6 +1,11 @@
 import ProductCard from './ProductCard';
 
-const ProductCatalogue = ({ visibleProducts, allProducts, onAddToCart }) => {
+const ProductCatalogue = ({
+  visibleProducts,
+  allProducts,
+  onAddToCart,
+  getAvailableQuantity
+}) => {
   if (allProducts.length === 0) {
     return <p>There are no products available.</p>;
   }
@@ -19,6 +24,7 @@ const ProductCatalogue = ({ visibleProducts, allProducts, onAddToCart }) => {
                   key={product.id}
                   product={product}
                   onAddToCart={onAddToCart}
+                  availableQuantity={getAvailableQuantity?.(product.id)}
                 />
               );
             })}

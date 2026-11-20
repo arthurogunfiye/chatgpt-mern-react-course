@@ -40,7 +40,12 @@ const Nav = ({ cartCount, onResetCart }) => {
           <span id='mobile-cart-count' role='status' aria-live='polite'>
             Cart: {cartCount}
           </span>
-          <button type='button' className='reset-cart' onClick={onResetCart}>
+          <button
+            type='button'
+            className='reset-cart'
+            onClick={onResetCart}
+            disabled={cartCount === 0}
+          >
             Reset Cart
           </button>
         </div>
@@ -75,6 +80,7 @@ const Nav = ({ cartCount, onResetCart }) => {
                 type='button'
                 className='reset-cart'
                 onClick={onResetCart}
+                disabled={cartCount === 0}
               >
                 Reset Cart
               </button>

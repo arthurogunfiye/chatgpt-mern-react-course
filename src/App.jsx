@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import CartSummary from './components/CartSummary';
+import Footer from './components/Footer';
 import Header from './components/Header';
 import ProductCatalogue from './components/ProductCatalogue';
 import ProductFilters from './components/ProductFilters';
 import SearchBar from './components/SearchBar';
 import { testProducts } from './data/sampleProducts';
 import selectVisibleProducts from './utils/selectVisibleProducts';
+import getSalePrice from './utils/getSalePrice';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -53,7 +55,8 @@ function App() {
         {
           id: selectedProduct.id,
           name: selectedProduct.name,
-          price: selectedProduct.price,
+          price: getSalePrice(selectedProduct),
+          originalPrice: selectedProduct.price,
           quantity: 1
         }
       ];
@@ -62,6 +65,17 @@ function App() {
 
   function getCartCount() {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  function getAvailableQuantity(productId) {
+    const product = testProducts.find(product => product.id === productId);
+
+    if (!product) return 0;
+
+    const itemInCart = cartItems.find(item => item.id === productId);
+    const quantityOfItemInCart = itemInCart ? itemInCart.quantity : 0;
+
+    return product.quantity - quantityOfItemInCart;
   }
 
   function getCartTotal() {
@@ -84,63 +98,40 @@ function App() {
   }
 
   function increaseCartItemQuantity(productId) {
-    const itemInCart = cartItems.find(cartItem => cartItem.id === productId);
+    const selectedProduct = testProducts.find(
+      product => product.id === productId
+    );
 
-    if (!itemInCart) return;
+    if (!selectedProduct) return;
+    if (!selectedProduct.inStock || selectedProduct.quantity === 0) return;
 
-    const product = testProducts.find(pdt => pdt.id === itemInCart.id);
-
-    if (!product) {
-      console.error(`Product with ID ${productId} not found`);
-      return;
-    }
-
-    if (itemInCart.quantity >= product.quantity) {
-      console.warn(
-        `You have reached the maximum quantity of ${product.name} in stock`
-      );
-      return;
-    }
-
-    setCartItems(previousItems => {
-      const existingItem = previousItems.find(item => item.id === productId);
-
-      if (existingItem) {
-        return previousItems.map(item =>
-          item.id === productId
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-    });
+    setCartItems(previousCartItems =>
+      previousCartItems.map(cartItem => {
+        if (cartItem.id !== productId) return cartItem;
+        if (cartItem.quantity >= selectedProduct.quantity) return cartItem;
+        return {
+          ...cartItem,
+          quantity: cartItem.quantity + 1
+        };
+      })
+    );
   }
 
   function decreaseCartItemQuantity(productId) {
-    const itemInCart = cartItems.find(cartItem => cartItem.id === productId);
-
-    if (!itemInCart) return;
-
-    if (itemInCart.quantity === 1) {
-      removeFromCart(productId);
-      return;
-    }
-
-    setCartItems(previousItems => {
-      const existingItem = previousItems.find(item => item.id === productId);
-
-      if (existingItem) {
-        return previousItems.map(item =>
-          item.id === productId
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        );
-      }
-    });
+    setCartItems(previousCartItems =>
+      previousCartItems
+        .map(cartItem =>
+          cartItem.id === productId
+            ? { ...cartItem, quantity: cartItem.quantity - 1 }
+            : cartItem
+        )
+        .filter(cartItem => cartItem.quantity > 0)
+    );
   }
 
   function removeFromCart(productId) {
-    setCartItems(previousItems =>
-      previousItems.filter(item => item.id !== productId)
+    setCartItems(previousCartItems =>
+      previousCartItems.filter(cartItem => cartItem.id !== productId)
     );
   }
 
@@ -176,6 +167,7 @@ function App() {
           visibleProducts={visibleProducts}
           allProducts={testProducts}
           onAddToCart={handleAddToCart}
+          getAvailableQuantity={getAvailableQuantity}
         />
         <CartSummary
           cartItems={cartItems}
@@ -184,8 +176,10 @@ function App() {
           onIncreaseQty={increaseCartItemQuantity}
           onDecreaseQty={decreaseCartItemQuantity}
           removeFromCart={removeFromCart}
+          getAvailableQuantity={getAvailableQuantity}
         />
       </main>
+      <Footer />
     </>
   );
 }

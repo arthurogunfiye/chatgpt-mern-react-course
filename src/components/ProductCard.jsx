@@ -1,24 +1,49 @@
 import formatPrice from '../utils/formatPrice';
+import getSalePrice from '../utils/getSalePrice';
 
-const ProductCard = ({ product, onAddToCart }) => {
-  const { id, name, price, inStock, category, onSale, quantity } = product;
+const ProductCard = ({
+  product,
+  onAddToCart,
+  availableQuantity = product.quantity
+}) => {
+  const { id, name, price, inStock, category, onSale, discount } = product;
+
+  const salePrice = getSalePrice(product);
+  const canAddToCart = inStock && availableQuantity > 0;
 
   return (
     <article id={`product-${id}`} className='product-card'>
       <h3 className='product-title'>{name}</h3>
-      {onSale && <span className='sale-badge'>SALE</span>}
+      {onSale && <span className='sale-badge'>SALE: {`${discount}% off`}</span>}
       <p className='product-category'>Category: {category}</p>
-      <p className='product-price'>Price: {formatPrice(price)}</p>
-      <p>{inStock ? 'In Stock' : 'Out of Stock'}</p>
-      {inStock && <p>Available: {quantity}</p>}
+      {onSale ? (
+        <p className='product-price'>
+          <s>Original Price: {formatPrice(price)}</s>
+        </p>
+      ) : (
+        <p className='product-price'>Price: {formatPrice(price)}</p>
+      )}
+
+      {onSale && (
+        <p className='discount-price'>Sale Price: {formatPrice(salePrice)}</p>
+      )}
+
+      <p>
+        {!inStock
+          ? 'Out of Stock'
+          : availableQuantity === 0
+            ? 'Maximum available quantity in cart'
+            : 'In Stock'}
+      </p>
+      {inStock && <p>Available: {availableQuantity}</p>}
       <button
         type='button'
         className='add-to-cart'
         data-product-id={id}
-        disabled={!inStock}
+        disabled={!canAddToCart}
         onClick={() => onAddToCart(id)}
       >
-        {!inStock ? 'Unavailable' : 'Add To Cart'}
+        {canAddToCart ? 'Add To Cart' : 'Unavailable'}
       </button>
     </article>
   );

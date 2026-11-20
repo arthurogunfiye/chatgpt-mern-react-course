@@ -36,7 +36,9 @@ describe('PROP-001: ProductCard displays correct name, category and price', () =
     const q = within(card);
     expect(q.getByRole('heading', { level: 3 })).toHaveTextContent(name);
     expect(q.getByText(`Category: ${category}`)).toBeInTheDocument();
-    expect(q.getByText(`Price: ${price}`)).toBeInTheDocument();
+    expect(
+      q.getByText(`Price: ${price}`, { exact: false })
+    ).toBeInTheDocument();
   });
 });
 
@@ -81,7 +83,7 @@ describe('PROP-004: SALE badge appears only for sale products', () => {
     '%s (onSale=%s)',
     (_name, isOnSale, product) => {
       const card = cardFor(product);
-      const badge = within(card).queryByText('SALE');
+      const badge = within(card).queryByText(/^SALE/);
       if (isOnSale) expect(badge).toBeInTheDocument();
       else expect(badge).not.toBeInTheDocument();
     }
@@ -90,7 +92,7 @@ describe('PROP-004: SALE badge appears only for sale products', () => {
   test('exactly 7 of the 14 products show a SALE badge in the catalogue', () => {
     renderCatalogue(testProducts);
     expect(onSale).toHaveLength(7);
-    expect(screen.getAllByText('SALE')).toHaveLength(7);
+    expect(screen.getAllByText(/^SALE/)).toHaveLength(7);
   });
 });
 
@@ -103,7 +105,9 @@ describe('PROP-005: Catalogue rendering and empty states', () => {
       testProducts.map(p => p.name)
     );
     expect(screen.queryByText('There are no products available.')).toBeNull();
-    expect(screen.queryByText('No products match your search or filters.')).toBeNull();
+    expect(
+      screen.queryByText('No products match your search or filters.')
+    ).toBeNull();
   });
 
   test('renders only the visible products it is given', () => {
@@ -113,14 +117,20 @@ describe('PROP-005: Catalogue rendering and empty states', () => {
 
   test('no products at all shows the "no products available" message', () => {
     const { container } = renderCatalogue([], []);
-    expect(screen.getByText('There are no products available.')).toBeInTheDocument();
-    expect(screen.queryByText('No products match your search or filters.')).toBeNull();
+    expect(
+      screen.getByText('There are no products available.')
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('No products match your search or filters.')
+    ).toBeNull();
     expect(container.querySelectorAll('article.product-card')).toHaveLength(0);
   });
 
   test('products exist but none are visible shows the "no match" message', () => {
     const { container } = renderCatalogue([], testProducts);
-    expect(screen.getByText('No products match your search or filters.')).toBeInTheDocument();
+    expect(
+      screen.getByText('No products match your search or filters.')
+    ).toBeInTheDocument();
     expect(screen.queryByText('There are no products available.')).toBeNull();
     expect(container.querySelectorAll('article.product-card')).toHaveLength(0);
   });

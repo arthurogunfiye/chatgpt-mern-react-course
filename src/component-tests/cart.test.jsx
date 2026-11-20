@@ -27,6 +27,30 @@ describe('CART: quantity controls', () => {
     expectCart(5); // capped
   });
 
+  test('+ is disabled at the stock limit and re-enabled after -', () => {
+    render(<App />);
+    addToCart(LAPTOP); // 1
+    for (let i = 0; i < 4; i++) click(`Increase quantity of ${LAPTOP}`); // 5
+    const plus = screen.getByRole('button', {
+      name: `Increase quantity of ${LAPTOP}`
+    });
+    expect(plus).toBeDisabled();
+    click(`Decrease quantity of ${LAPTOP}`);
+    expect(plus).toBeEnabled();
+  });
+
+  test('Available shows stock minus quantity in cart', () => {
+    render(<App />);
+    const card = screen
+      .getByRole('heading', { level: 3, name: LAPTOP })
+      .closest('article');
+    expect(within(card).getByText('Available: 5')).toBeInTheDocument();
+    addToCart(LAPTOP);
+    expect(within(card).getByText('Available: 4')).toBeInTheDocument();
+    click(`Remove ${LAPTOP}`);
+    expect(within(card).getByText('Available: 5')).toBeInTheDocument();
+  });
+
   test('- decreases quantity and removes the item at 1', () => {
     render(<App />);
     addToCart(LAPTOP);

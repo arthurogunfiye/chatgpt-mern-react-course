@@ -7,7 +7,9 @@ import selectVisibleProducts from '../utils/selectVisibleProducts';
 // ---------- helpers (same conventions as state.test.jsx) ----------
 const cards = () => document.querySelectorAll('article.product-card');
 const cardTitles = () =>
-  [...cards()].map(c => within(c).getByRole('heading', { level: 3 }).textContent);
+  [...cards()].map(
+    c => within(c).getByRole('heading', { level: 3 }).textContent
+  );
 const sourceOrder = testProducts.map(p => p.name);
 
 const searchBox = () => screen.getByLabelText('Search Products');
@@ -16,8 +18,10 @@ const sortSelect = () => screen.getByLabelText('Sort Products');
 const inStockBox = () => screen.getByLabelText('In Stock Only');
 const onSaleBox = () => screen.getByLabelText('On Sale Only');
 
-const search = term => fireEvent.change(searchBox(), { target: { value: term } });
-const pickCategory = value => fireEvent.change(categorySelect(), { target: { value } });
+const search = term =>
+  fireEvent.change(searchBox(), { target: { value: term } });
+const pickCategory = value =>
+  fireEvent.change(categorySelect(), { target: { value } });
 const pickSort = value => fireEvent.change(sortSelect(), { target: { value } });
 
 const NO_MATCH = 'No products match your search or filters.';
@@ -102,10 +106,14 @@ describe('FILTER-003: Sale filtering', () => {
       'Samsung Galaxy Tab S12 Ultra',
       'Google Pixel 11 Pro'
     ]);
-    cards().forEach(c => expect(within(c).getByText('SALE')).toBeInTheDocument());
+    cards().forEach(c =>
+      expect(within(c).getByText(/^SALE/)).toBeInTheDocument()
+    );
 
     // Out-of-stock sale items are still listed, but not purchasable
-    const hdmi = screen.getByRole('heading', { level: 3, name: 'HDMI Cable' }).closest('article');
+    const hdmi = screen
+      .getByRole('heading', { level: 3, name: 'HDMI Cable' })
+      .closest('article');
     expect(within(hdmi).getByRole('button')).toBeDisabled();
     expect(within(hdmi).getByRole('button')).toHaveTextContent('Unavailable');
 
@@ -134,8 +142,10 @@ describe('FILTER-004: Combined filters', () => {
 
     expect(cardTitles()).toEqual(['Samsung Galaxy S26 Ultra']);
     const card = cards()[0];
-    expect(within(card).getByText('Price: £1,529.00')).toBeInTheDocument();
-    expect(within(card).getByText('SALE')).toBeInTheDocument();
+    expect(
+      within(card).getByText('Price: £1,529.00', { exact: false })
+    ).toBeInTheDocument();
+    expect(within(card).getByText(/^SALE/)).toBeInTheDocument();
     expect(within(card).getByText('In Stock')).toBeInTheDocument();
     expect(within(card).getByRole('button')).toBeEnabled();
   });
@@ -192,7 +202,9 @@ describe('FILTER-005: Sorting and reset regression', () => {
 
   const prices = () =>
     [...cards()].map(c =>
-      Number(c.querySelector('.product-price').textContent.replace(/[^\d.]/g, ''))
+      Number(
+        c.querySelector('.product-price').textContent.replace(/[^\d.]/g, '')
+      )
     );
 
   test('ascending, descending and default orders are correct', () => {
@@ -287,10 +299,18 @@ describe('FILTER-006: Alphabetical (A-Z) ordering', () => {
   test('handles shared prefixes, digits and mixed case', () => {
     render(<App />);
     pickSort('a-z');
-    expect(indexOf('Apple iPad Air')).toBeLessThan(indexOf('Apple iPhone 18 Pro'));
-    expect(indexOf('Google Pixel 11 Pro')).toBeLessThan(indexOf('Google Pixel Tablet'));
-    expect(indexOf('HDMI Cable')).toBeLessThan(indexOf('HP EliteBook 8 G1i Laptop'));
-    expect(indexOf('HP EliteBook 8 G1i Laptop')).toBeLessThan(indexOf('Huawei Mate XT Phone'));
+    expect(indexOf('Apple iPad Air')).toBeLessThan(
+      indexOf('Apple iPhone 18 Pro')
+    );
+    expect(indexOf('Google Pixel 11 Pro')).toBeLessThan(
+      indexOf('Google Pixel Tablet')
+    );
+    expect(indexOf('HDMI Cable')).toBeLessThan(
+      indexOf('HP EliteBook 8 G1i Laptop')
+    );
+    expect(indexOf('HP EliteBook 8 G1i Laptop')).toBeLessThan(
+      indexOf('Huawei Mate XT Phone')
+    );
   });
 
   test('A-Z is applied after category filtering', () => {

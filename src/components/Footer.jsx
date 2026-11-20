@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <p>
+    <footer>
       <p>&copy; 2026 MyStore. All rights reserved.</p>
-    </p>
+    </footer>
   );
 };
 export default Footer;

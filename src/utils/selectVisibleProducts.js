@@ -1,3 +1,5 @@
+import getSalePrice from './getSalePrice';
+
 export default function selectProducts(products, filters) {
   const {
     searchTerm = '',
@@ -24,11 +26,15 @@ export default function selectProducts(products, filters) {
   });
 
   if (sortOrder === 'price-asc') {
-    return [...filteredProducts].sort((a, b) => a.price - b.price);
+    return [...filteredProducts].sort(
+      (a, b) => getSalePrice(a) - getSalePrice(b)
+    );
   }
 
   if (sortOrder === 'price-desc') {
-    return [...filteredProducts].sort((a, b) => b.price - a.price);
+    return [...filteredProducts].sort(
+      (a, b) => getSalePrice(b) - getSalePrice(a)
+    );
   }
 
   if (sortOrder === 'a-z') {
