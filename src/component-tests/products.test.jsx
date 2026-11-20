@@ -68,12 +68,13 @@ describe('PROP-003: Out-of-stock products have a disabled Unavailable button', (
     expect(onAddToCart).not.toHaveBeenCalled();
   });
 
-  test('there are exactly 4 out-of-stock products', () => {
+  test('there are exactly 5 out-of-stock products', () => {
     expect(outOfStock.map(p => p.name)).toEqual([
       'Bose QuietComfort Ultra Headphones',
       'HDMI Cable',
       'Samsung Galaxy Tab S12 Ultra',
-      'Google Pixel 11 Pro'
+      'Google Pixel 11 Pro',
+      'Asus AT300SE Tablet'
     ]);
   });
 });
@@ -97,10 +98,10 @@ describe('PROP-004: SALE badge appears only for sale products', () => {
 });
 
 describe('PROP-005: Catalogue rendering and empty states', () => {
-  test('renders all 14 product cards in source order', () => {
+  test('renders all 16 product cards in source order', () => {
     const { container } = renderCatalogue(testProducts);
     const cards = container.querySelectorAll('article.product-card');
-    expect(cards).toHaveLength(14);
+    expect(cards).toHaveLength(16);
     expect([...cards].map(c => c.querySelector('h3').textContent)).toEqual(
       testProducts.map(p => p.name)
     );

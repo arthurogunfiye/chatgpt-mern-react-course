@@ -23,10 +23,10 @@ const search = term =>
   fireEvent.change(searchBox(), { target: { value: term } });
 
 describe('STATE-001: Initial render', () => {
-  test('cart is 0 and all 14 products are visible', () => {
+  test('cart is 0 and all 16 products are visible', () => {
     render(<App />);
     expectCart(0);
-    expect(cards()).toHaveLength(14);
+    expect(cards()).toHaveLength(16);
     expect(cardTitles()).toEqual(testProducts.map(p => p.name));
     expect(searchBox()).toHaveValue('');
     expect(
@@ -90,7 +90,7 @@ describe('STATE-004: Mixed-case search with spaces', () => {
 });
 
 describe('STATE-005: No matches and search recovery', () => {
-  test('empty message appears, then clearing restores 14 products', () => {
+  test('empty message appears, then clearing restores 16 products', () => {
     render(<App />);
     search('xyz-no-such-product');
     expect(cards()).toHaveLength(0);
@@ -101,7 +101,7 @@ describe('STATE-005: No matches and search recovery', () => {
     expect(screen.queryByText('There are no products available.')).toBeNull();
 
     search('');
-    expect(cards()).toHaveLength(14);
+    expect(cards()).toHaveLength(16);
     expect(
       screen.queryByText('No products match your search or filters.')
     ).toBeNull();

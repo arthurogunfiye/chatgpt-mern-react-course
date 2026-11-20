@@ -42,15 +42,16 @@ const expectDefaultFilterState = () => {
 
 // ---------- FILTER-001 ----------
 describe('FILTER-001: Category filtering', () => {
-  test('Laptops shows exactly 3 laptop products, All Categories restores 14', () => {
+  test('Laptops shows exactly 4 laptop products, All Categories restores 16', () => {
     render(<App />);
-    expect(cards()).toHaveLength(14);
+    expect(cards()).toHaveLength(16);
 
     pickCategory('Laptops');
     expect(cardTitles()).toEqual([
       'HP EliteBook 8 G1i Laptop',
       'Dell Pro 16 Plus Laptop',
-      'Acer Aspire 14 AI Laptop'
+      'Acer Aspire 14 AI Laptop',
+      'Toshiba Satellite C50-C Laptop'
     ]);
     cards().forEach(c =>
       expect(within(c).getByText('Category: Laptops')).toBeInTheDocument()
@@ -69,7 +70,7 @@ describe('FILTER-002: Stock filtering', () => {
     fireEvent.click(inStockBox());
     expect(inStockBox()).toBeChecked();
 
-    expect(cards()).toHaveLength(10);
+    expect(cards()).toHaveLength(11);
     cards().forEach(c => {
       expect(within(c).getByText('In Stock')).toBeInTheDocument();
       const btn = within(c).getByRole('button');
@@ -86,7 +87,7 @@ describe('FILTER-002: Stock filtering', () => {
     ].forEach(name => expect(titles).not.toContain(name));
 
     fireEvent.click(inStockBox());
-    expect(cards()).toHaveLength(14);
+    expect(cards()).toHaveLength(16);
   });
 });
 
@@ -118,7 +119,7 @@ describe('FILTER-003: Sale filtering', () => {
     expect(within(hdmi).getByRole('button')).toHaveTextContent('Unavailable');
 
     fireEvent.click(onSaleBox());
-    expect(cards()).toHaveLength(14);
+    expect(cards()).toHaveLength(16);
   });
 });
 
@@ -169,6 +170,7 @@ describe('FILTER-005: Sorting and reset regression', () => {
     'HDMI Cable',
     'Toshiba Keyboard',
     'Samsung Monitor',
+    'Asus AT300SE Tablet',
     'Bose QuietComfort Ultra Headphones',
     'Google Pixel Tablet',
     'Google Pixel 11 Pro',
@@ -177,6 +179,7 @@ describe('FILTER-005: Sorting and reset regression', () => {
     'Huawei Mate XT Phone',
     'Apple iPhone 18 Pro',
     'Apple iPad Air',
+    'Toshiba Satellite C50-C Laptop',
     'Samsung Galaxy S26 Ultra',
     'HP EliteBook 8 G1i Laptop',
     'Dell Pro 16 Plus Laptop'
@@ -186,6 +189,7 @@ describe('FILTER-005: Sorting and reset regression', () => {
     'Dell Pro 16 Plus Laptop',
     'HP EliteBook 8 G1i Laptop',
     'Samsung Galaxy S26 Ultra',
+    'Toshiba Satellite C50-C Laptop',
     'Apple iPhone 18 Pro',
     'Apple iPad Air',
     'Huawei Mate XT Phone',
@@ -194,6 +198,7 @@ describe('FILTER-005: Sorting and reset regression', () => {
     'Google Pixel 11 Pro',
     'Google Pixel Tablet',
     'Bose QuietComfort Ultra Headphones',
+    'Asus AT300SE Tablet',
     'Samsung Monitor',
     'Toshiba Keyboard',
     'HDMI Cable'
@@ -268,6 +273,7 @@ describe('FILTER-006: Alphabetical (A-Z) ordering', () => {
     'Acer Aspire 14 AI Laptop',
     'Apple iPad Air',
     'Apple iPhone 18 Pro',
+    'Asus AT300SE Tablet',
     'Bose QuietComfort Ultra Headphones',
     'Dell Pro 16 Plus Laptop',
     'Google Pixel 11 Pro',
@@ -278,12 +284,13 @@ describe('FILTER-006: Alphabetical (A-Z) ordering', () => {
     'Samsung Galaxy S26 Ultra',
     'Samsung Galaxy Tab S12 Ultra',
     'Samsung Monitor',
-    'Toshiba Keyboard'
+    'Toshiba Keyboard',
+    'Toshiba Satellite C50-C Laptop'
   ];
 
   const indexOf = name => cardTitles().indexOf(name);
 
-  test('A-Z orders all 14 products alphabetically', () => {
+  test('A-Z orders all 16 products alphabetically', () => {
     render(<App />);
     pickSort('a-z');
     expect(cardTitles()).toEqual(alphabetical);
@@ -319,7 +326,8 @@ describe('FILTER-006: Alphabetical (A-Z) ordering', () => {
     expect(cardTitles()).toEqual([
       'Acer Aspire 14 AI Laptop',
       'Dell Pro 16 Plus Laptop',
-      'HP EliteBook 8 G1i Laptop'
+      'HP EliteBook 8 G1i Laptop',
+      'Toshiba Satellite C50-C Laptop'
     ]);
   });
 

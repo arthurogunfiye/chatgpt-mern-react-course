@@ -138,5 +138,25 @@ export const testProducts = [
     inStock: false,
     onSale: true,
     discount: 15
+  },
+  {
+    id: 115,
+    name: 'Toshiba Satellite C50-C Laptop',
+    price: 1299,
+    category: 'Laptops',
+    quantity: 10,
+    inStock: true,
+    onSale: false,
+    discount: 0
+  },
+  {
+    id: 116,
+    name: 'Asus AT300SE Tablet',
+    price: 249,
+    category: 'Tablets',
+    quantity: 0,
+    inStock: false,
+    onSale: false,
+    discount: 0
   }
 ];

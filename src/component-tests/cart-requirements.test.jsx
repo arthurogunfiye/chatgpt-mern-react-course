@@ -115,7 +115,9 @@ describe('CART-003: Attempt to add an out-of-stock product', () => {
     fireEvent.click(btn);
 
     expectHeaderCount(0);
-    expect(within(cartRegion()).getByText('Your cart is empty.')).toBeInTheDocument();
+    expect(
+      within(cartRegion()).getByText('Your cart is empty.')
+    ).toBeInTheDocument();
   });
 
   test.each(OUT_OF_STOCK)('%s: existing cart is unchanged', name => {
@@ -163,7 +165,9 @@ describe('CART-004: Reset Cart', () => {
       screen
         .getAllByRole('status')
         .forEach(c => expect.soft(c).toHaveTextContent('Cart: 0'));
-      expect.soft(cartTotalText(), 'cart total shown after reset').toBe('£0.00');
+      expect
+        .soft(cartTotalText(), 'cart total shown after reset')
+        .toBe('£0.00');
 
       // Cart keeps working after reset
       addToCart(KEYBOARD, 1);
@@ -211,7 +215,7 @@ describe('CART-005: Search/filter/sort regression', () => {
 
     // Clear filters restores the full catalogue, cart untouched
     fireEvent.click(screen.getByRole('button', { name: 'Clear Filters' }));
-    expect(cardTitles()).toHaveLength(14);
+    expect(cardTitles()).toHaveLength(16);
     expect(cartSnapshot()).toEqual(before);
 
     // Sort
