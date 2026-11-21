@@ -4,7 +4,7 @@ const initialCart = [];
 
 function cartReducer(state, action) {
   switch (action.type) {
-    case 'ADD':
+    case 'ADD_ITEM': {
       const product = action.payload;
       const existingItemInCart = state.find(item => item.id === product.id);
 
@@ -24,11 +24,19 @@ function cartReducer(state, action) {
           quantity: 1
         }
       ];
+    }
 
-    case 'REMOVE':
-      return state.filter(item => item.id !== action.payload);
+    case 'REMOVE_ITEM': {
+      return state
+        .map(item =>
+          item.id === action.payload
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter(item => item.quantity > 0);
+    }
 
-    case 'RESET':
+    case 'RESET_CART':
       return [];
 
     default:
@@ -48,7 +56,7 @@ function App() {
         type='button'
         onClick={() =>
           dispatch({
-            type: 'ADD',
+            type: 'ADD_ITEM',
             payload: { id: 101, name: 'Samsung Monitor' }
           })
         }
@@ -58,12 +66,12 @@ function App() {
 
       <button
         type='button'
-        onClick={() => dispatch({ type: 'REMOVE', payload: 101 })}
+        onClick={() => dispatch({ type: 'REMOVE_ITEM', payload: 101 })}
       >
         REMOVE
       </button>
 
-      <button type='button' onClick={() => dispatch({ type: 'RESET' })}>
+      <button type='button' onClick={() => dispatch({ type: 'RESET_CART' })}>
         RESET
       </button>
     </section>
