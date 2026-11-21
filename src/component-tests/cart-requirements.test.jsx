@@ -1,5 +1,6 @@
-import { describe, test, expect } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, test } from 'vitest';
 import App from '../App';
 
 // ---------- product fixtures (prices from sampleProducts + getSalePrice) ----------
@@ -73,6 +74,33 @@ const cardTitles = () =>
 
 // =====================================================================
 describe('CART-001: Add the same product three times', () => {
+  test('adding Samsung Monitor updates both cart counters', async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    const monitorCard = screen
+      .getByRole('heading', {
+        level: 3,
+        name: 'Samsung Monitor'
+      })
+      .closest('article');
+
+    const addButton = within(monitorCard).getByRole('button', {
+      name: 'Add To Cart'
+    });
+
+    await user.click(addButton);
+
+    const counters = screen.getAllByRole('status');
+
+    expect(counters).toHaveLength(2);
+
+    counters.forEach(counter => {
+      expect(counter).toHaveTextContent('Cart: 1');
+    });
+  });
+
   test('one cart entry with quantity 3; header count 3', () => {
     render(<App />);
     expectHeaderCount(0);
