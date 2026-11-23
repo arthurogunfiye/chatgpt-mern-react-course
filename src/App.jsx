@@ -5,12 +5,12 @@ import Header from './components/Header';
 import ProductCatalogue from './components/ProductCatalogue';
 import ProductFilters from './components/ProductFilters';
 import SearchBar from './components/SearchBar';
+import { CartProvider, useCart } from './context/CartContext';
 import { testProducts } from './data/sampleProducts';
 import selectVisibleProducts from './utils/selectVisibleProducts';
-import getSalePrice from './utils/getSalePrice';
 
-function App() {
-  const [cartItems, setCartItems] = useState([]);
+function AppContent() {
+  const { cartItems, dispatch } = useCart();
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -22,46 +22,18 @@ function App() {
       product => product.id === productId
     );
 
-    if (!selectedProduct) {
-      console.log(`Product with ID ${productId} not found!`);
-      return;
-    }
-
-    if (!selectedProduct.inStock || selectedProduct.quantity <= 0) {
+    if (
+      !selectedProduct ||
+      !selectedProduct.inStock ||
+      selectedProduct.quantity <= 0
+    ) {
       console.warn(`Product with ID ${productId} is out of stock`);
       return;
     }
 
-    setCartItems(previousCartItems => {
-      const existingCartItem = previousCartItems.find(
-        item => item.id === productId
-      );
-
-      if (existingCartItem) {
-        if (existingCartItem.quantity >= selectedProduct.quantity) {
-          console.warn(
-            `You have reached the maximum quantity of ${selectedProduct.name} in stock`
-          );
-          return previousCartItems;
-        }
-
-        return previousCartItems.map(item =>
-          item.id === productId
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-
-      return [
-        ...previousCartItems,
-        {
-          id: selectedProduct.id,
-          name: selectedProduct.name,
-          price: getSalePrice(selectedProduct),
-          originalPrice: selectedProduct.price,
-          quantity: 1
-        }
-      ];
+    dispatch({
+      type: 'ADD_ITEM',
+      payload: selectedProduct
     });
   }
 
@@ -88,7 +60,7 @@ function App() {
   }
 
   function handleResetCart() {
-    setCartItems([]);
+    dispatch({ type: 'RESET_CART' });
   }
 
   function handleClearFilters() {
@@ -100,41 +72,24 @@ function App() {
   }
 
   function increaseCartItemQuantity(productId) {
-    const selectedProduct = testProducts.find(
-      product => product.id === productId
-    );
-
-    if (!selectedProduct) return;
-    if (!selectedProduct.inStock || selectedProduct.quantity === 0) return;
-
-    setCartItems(previousCartItems =>
-      previousCartItems.map(cartItem => {
-        if (cartItem.id !== productId) return cartItem;
-        if (cartItem.quantity >= selectedProduct.quantity) return cartItem;
-        return {
-          ...cartItem,
-          quantity: cartItem.quantity + 1
-        };
-      })
-    );
+    dispatch({
+      type: 'INCREASE_QUANTITY',
+      payload: productId
+    });
   }
 
   function decreaseCartItemQuantity(productId) {
-    setCartItems(previousCartItems =>
-      previousCartItems
-        .map(cartItem =>
-          cartItem.id === productId
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-        .filter(cartItem => cartItem.quantity > 0)
-    );
+    dispatch({
+      type: 'DECREASE_QUANTITY',
+      payload: productId
+    });
   }
 
   function removeFromCart(productId) {
-    setCartItems(previousCartItems =>
-      previousCartItems.filter(cartItem => cartItem.id !== productId)
-    );
+    dispatch({
+      type: 'REMOVE_ITEM',
+      payload: productId
+    });
   }
 
   const filters = {
@@ -183,6 +138,14 @@ function App() {
       </main>
       <Footer />
     </>
+  );
+}
+
+function App() {
+  return (
+    <CartProvider>
+      <AppContent />
+    </CartProvider>
   );
 }
 

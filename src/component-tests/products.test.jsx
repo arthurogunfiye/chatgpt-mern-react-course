@@ -5,12 +5,14 @@ import ProductCatalogue from '../components/ProductCatalogue';
 import { testProducts } from '../data/sampleProducts';
 
 const byName = name => testProducts.find(p => p.name === name);
+
 const cardFor = (product, onAddToCart = () => {}) => {
   const { container } = render(
     <ProductCard product={product} onAddToCart={onAddToCart} />
   );
   return container.querySelector('article');
 };
+
 const renderCatalogue = (visibleProducts, allProducts = testProducts) =>
   render(
     <ProductCatalogue

@@ -15,9 +15,11 @@ export function cartReducer(state, action) {
       // Reject invalid, unknown or out-of-stock products.
       const selectedProduct = testProducts.find(pdt => pdt.id === product.id);
 
-      if (!selectedProduct) return state;
-
-      if (!selectedProduct.inStock || selectedProduct.quantity <= 0)
+      if (
+        !selectedProduct ||
+        !selectedProduct.inStock ||
+        selectedProduct.quantity <= 0
+      )
         return state;
 
       // TODO 2:
