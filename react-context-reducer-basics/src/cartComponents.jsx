@@ -35,6 +35,13 @@ export function CartSummary() {
     dispatch({ type: 'RESET_CART' });
   }
 
+  function handleDecreaseQuantity(productId) {
+    dispatch({
+      type: 'DECREASE_QUANTITY',
+      payload: productId
+    });
+  }
+
   return (
     <section>
       <h2>Cart Summary</h2>
@@ -44,10 +51,7 @@ export function CartSummary() {
           <span>
             {item.name} — Quantity: {item.quantity}
           </span>
-          <button
-            type='button'
-            onClick={() => dispatch({ type: 'REMOVE_ITEM', payload: item.id })}
-          >
+          <button type='button' onClick={() => handleDecreaseQuantity(item.id)}>
             Remove
           </button>
         </div>
