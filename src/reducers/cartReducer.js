@@ -92,6 +92,10 @@ export function cartReducer(state, action) {
     case 'DECREASE_QUANTITY': {
       // quantity and remove it at zero. // Decrease the matching cart item's // TODO 6:
       const productId = action.payload;
+      const existingItemInCart = state.find(item => item.id === productId);
+
+      if (!existingItemInCart) return state;
+
       return state
         .map(cartItem =>
           cartItem.id === productId
@@ -104,13 +108,18 @@ export function cartReducer(state, action) {
     case 'REMOVE_ITEM': {
       // Remove the entire matching cart item. // TODO 7:
       const productId = action.payload;
+
+      const existingItemInCart = state.find(item => item.id === productId);
+
+      if (!existingItemInCart) return state;
+
       return state.filter(item => item.id !== productId);
     }
 
     case 'RESET_CART':
       // TODO 8:
       // Return an empty array.
-      return [];
+      return state.length === 0 ? state : [];
 
     default:
       return state;

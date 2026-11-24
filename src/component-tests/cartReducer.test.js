@@ -135,6 +135,7 @@ describe('MyStore cartReducer', () => {
     expect(result.length).toBe(0);
     expect(initialCart.length).toBe(0);
     expect(result).toStrictEqual(initialCart);
+    expect(result).toBe(initialCart);
   });
 
   it('does not add an out-of-stock item', () => {
@@ -341,6 +342,25 @@ describe('MyStore cartReducer', () => {
     expect(originalCart.length).toBe(2);
     expect(originalCart[0].quantity).toBe(3);
     expect(originalCart[1].quantity).toBe(2);
+  });
+
+  it('returns the same state when decreasing an item not in the cart', () => {
+    const originalCart = [
+      {
+        id: 104,
+        name: 'Samsung Monitor',
+        price: 116.1,
+        originalPrice: 129,
+        quantity: 1
+      }
+    ];
+
+    const result = cartReducer(originalCart, {
+      type: 'DECREASE_QUANTITY',
+      payload: 999
+    });
+
+    expect(result).toBe(originalCart);
   });
 
   it('resets the cart', () => {
