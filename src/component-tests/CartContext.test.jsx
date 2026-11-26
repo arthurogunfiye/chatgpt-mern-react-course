@@ -73,6 +73,6 @@ describe('CartContext integration', () => {
   it('throws an error for component without provider', () => {
     expect(() => {
       render(<UnwrappedConsumer />);
-    }).toThrow('useCart hook has to be used with CartProvider');
+    }).toThrow('useCart hook has to be used within CartProvider');
   });
 });

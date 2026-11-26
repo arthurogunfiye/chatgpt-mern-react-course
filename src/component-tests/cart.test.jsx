@@ -1,6 +1,10 @@
-import { describe, test, expect } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import { beforeEach, describe, expect, test } from 'vitest';
 import App from '../App';
+
+beforeEach(() => {
+  localStorage.removeItem('mystore-cart');
+});
 
 const expectCart = n =>
   screen

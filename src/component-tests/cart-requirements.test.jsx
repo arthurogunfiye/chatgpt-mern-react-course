@@ -1,7 +1,11 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, beforeEach } from 'vitest';
 import App from '../App';
+
+beforeEach(() => {
+  localStorage.removeItem('mystore-cart');
+});
 
 // ---------- product fixtures (prices from sampleProducts + getSalePrice) ----------
 const MONITOR = 'Samsung Monitor'; // £129.00, 10% off → £116.10, stock 7

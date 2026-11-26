@@ -1,7 +1,11 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import App from '../App';
 import { testProducts } from '../data/sampleProducts';
+
+beforeEach(() => {
+  localStorage.removeItem('mystore-cart');
+});
 
 // The cart count renders twice (mobile + desktop nav). Both must agree.
 const expectCart = n => {
