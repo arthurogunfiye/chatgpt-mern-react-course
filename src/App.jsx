@@ -7,11 +7,12 @@ import ProductFilters from './components/ProductFilters';
 import SearchBar from './components/SearchBar';
 import { CartProvider, useCart } from './context/CartContext';
 import { testProducts } from './data/sampleProducts';
+import useSearchTerm from './hooks/useSearchTerm';
 import selectVisibleProducts from './utils/selectVisibleProducts';
 
 function AppContent() {
   const { cartItems, dispatch } = useCart();
-  const [searchTerm, setSearchTerm] = useState('');
+  const { searchTerm, updateSearch, clearSearch } = useSearchTerm();
   const [category, setCategory] = useState('all');
   const [inStockOnly, setInStockOnly] = useState(false);
   const [onSaleOnly, setOnSaleOnly] = useState(false);
@@ -64,7 +65,7 @@ function AppContent() {
   }
 
   function handleClearFilters() {
-    setSearchTerm('');
+    clearSearch();
     setCategory('all');
     setInStockOnly(false);
     setOnSaleOnly(false);
@@ -106,7 +107,7 @@ function AppContent() {
     <>
       <Header cartCount={getCartCount()} onResetCart={handleResetCart} />
       <main id='products'>
-        <SearchBar searchTerm={searchTerm} onSearchTerm={setSearchTerm} />
+        <SearchBar searchTerm={searchTerm} onSearchTerm={updateSearch} />
         <ProductFilters
           category={category}
           inStockOnly={inStockOnly}
